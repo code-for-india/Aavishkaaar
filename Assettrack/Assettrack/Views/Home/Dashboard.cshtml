@@ -1,0 +1,238 @@
+﻿@model Assettrack.Models.ModelProperties
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>    
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script src="~/Scripts/gmaps.js"></script>    
+<link href="~/Content/examples.css" rel="stylesheet" />
+<script src="~/Scripts/raphael-2.1.4.min.js"></script>
+<script src="~/Scripts/justgage.js"></script>
+
+
+
+<div class="row" style="margin-top:10px;">
+    <div class="col-xs-2">        
+        <a href="@Url.Action("Dashboard", new { @name = "PALAMPUR/HP/IN" })">
+            @if (ViewBag.id == 1)
+            {
+            <img class="img-responsive img-circle active1" src=@Url.Content("/Content/12.png") style="height:100px;"/>
+            }
+            else
+            { 
+            <img class="img-responsive img-circle" src=@Url.Content("/Content/12.png") style="height:100px;"/>}
+        </a>
+    </div>
+    <div class="col-xs-2">
+        <a href="@Url.Action("Dashboard", new { @name= "HAZARIBAUGH/JR/IN"})">
+@if (ViewBag.id == 2)
+{
+            <img class="img-responsive img-circle active1" src=@Url.Content("/Content/12.png") style="height:100px;" />
+}
+else {
+            <img class="img-responsive img-circle" src=@Url.Content("/Content/12.png") style="height:100px;"/>}
+        </a>
+    </div>
+    <div class="col-xs-2">
+        <a href="@Url.Action("Dashboard", new { @name= "PALAKKAD/KR/IN" })">
+            @if (ViewBag.id == 3)
+            {
+                <img class="img-responsive img-circle active1" src=@Url.Content("/Content/12.png") style="height:100px;"/>
+            }
+            else
+            {
+                <img class="img-responsive img-circle" src=@Url.Content("/Content/12.png") style="height:100px;"/>}
+        </a>
+    </div>
+    <div class="col-xs-2">
+        <a href="@Url.Action("Dashboard", new { @name= "JALGAON/MH/IN" })">
+            @if (ViewBag.id == 4)
+            {
+                <img class="img-responsive img-circle active1" src=@Url.Content("/Content/12.png") style="height:100px;"/>
+            }
+            else
+            {
+                <img class="img-responsive img-circle" src=@Url.Content("/Content/12.png") style="height:100px;"/>}
+        </a>
+    </div>
+    <div class="col-xs-2">
+        <a href="@Url.Action("Dashboard", new { @name= "PATNA/BR/IN" })">
+            @if (ViewBag.id == 5)
+            {
+                <img class="img-responsive img-circle active1" src=@Url.Content("/Content/12.png") style="height:100px;"/>
+            }
+            else
+            {
+                <img class="img-responsive img-circle" src=@Url.Content("/Content/12.png") style="height:100px;"/>}
+        </a>
+    </div>
+    <div class="col-xs-2">
+        <a href="@Url.Action("Dashboard", new { @name= "KUTCH/GJ/IN" })">
+            @if (ViewBag.id == 6)
+            {
+                <img class="img-responsive img-circle active1" src=@Url.Content("/Content/12.png") style="height:100px;"/>
+            }
+            else
+            {
+                <img class="img-responsive img-circle" src=@Url.Content("/Content/12.png") style="height:100px;"/>}
+        </a>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <h1>DASHBOARD</h1>
+
+    <div class="col-xs-3" style="margin-top:25px;">
+        <strong class="headings">Asset Name</strong>
+        <p class="display" style="margin-bottom:120px;">@Html.DisplayFor(model => model.Asset_Data_Object.asset_id)</p>
+        <strong class="headings">Footfalls</strong>
+        <p class="display">@Html.DisplayFor(model => model.Asset_Data_Object.total_users)</p>
+    </div>
+    <div class="col-xs-3" style="margin-left:100px; margin-top:25px;">
+        <strong class="headings">Sanitary Index</strong>
+        <p class="display" style="margin-bottom:120px;">@Math.Round(Convert.ToDouble(Model.Asset_Data_Object.sanitary_Index),2)</p>
+        <strong class="headings">Sanitary Index Flag</strong>
+        <p>
+            @if(Model.Asset_Data_Object.sanitary_Index<15)
+            {
+                <img class="flag" src="@Url.Content("/Content/green.png")" />
+            }
+            else if (15 < Model.Asset_Data_Object.sanitary_Index && Model.Asset_Data_Object.sanitary_Index < 30)
+            {
+                <img class="flag" src="@Url.Content("/Content/yellow.jpg")" />
+            }
+            else if (30 < Model.Asset_Data_Object.sanitary_Index && Model.Asset_Data_Object.sanitary_Index < 45)
+            {
+                <img class="flag" src="@Url.Content("/Content/orange.png")" />
+            }
+            else
+            {
+                <img class="flag" src="@Url.Content("/Content/red.png")" />
+            }
+        </p>
+    </div>
+    <div class="col-xs-3">
+        <div id="map" style="width: 300px; height: 300px;"></div>
+    </div>
+
+</div>
+
+<div class="row" style="margin-top:20px;">
+    <div class="col-xs-3">
+        <div id="gauge" class="300x200px"></div>
+        <p style="visibility:hidden;" id="tempdata">@Math.Round(Convert.ToDouble(Model.Asset_Data_Object.temperature), 2)</p>
+    </div>
+    <div class="col-xs-3">
+        <div id="gauge1" class="300x200px"></div>
+        <p style="visibility:hidden;" id="pressdata">@Math.Round(Convert.ToDouble(Model.Asset_Data_Object.pressure),2)</p>
+    </div>
+    <div class="col-xs-3">
+        <div id="gauge2" class="300x200px"></div>
+        <p style="visibility:hidden;" id="humiditydata">@Math.Round(Convert.ToDouble(Model.Asset_Data_Object.humidity),2)</p>
+    </div>
+    <div class="col-xs-2">
+        <div id="gauge3" class="300x200px"></div>
+        <p style="visibility:hidden;" id="ammoniadata">@Math.Round(Convert.ToDouble(Model.Asset_Data_Object.ammonia),2)</p>
+    </div>
+</div>
+
+<div class="row" style="margin-top:20px;">
+    <div class="col-xs-3">
+        <h2>Media Rating</h2>
+        <p style="font-size: 45px;font-weight: bold;">@Model.Asset_Data_Object.rating <img style="height:60px; width:60px;margin-bottom:27px;" src="~/Content/123.png" /> </p>
+        <p style="visibility:hidden;" id="lat">@Model.Asset_Data_Object.longitude</p>
+        <p style="visibility:hidden;" id="lon">@Model.Asset_Data_Object.latitude</p>
+    </div>
+    <div class="col-xs-6">
+        @if(Math.Round(Convert.ToDouble(Model.Asset_Data_Object.pressure), 2)*Math.Round(Convert.ToDouble(Model.Asset_Data_Object.humidity), 2)>1000)
+        {
+        <p class="activatedgreen">Ventilation</p>
+        }
+        else
+        {
+        <p class="box1">Ventilation</p>
+        }
+        @if(Math.Round(Convert.ToDouble(Model.Asset_Data_Object.temperature), 2)*Math.Round(Convert.ToDouble(Model.Asset_Data_Object.humidity), 2)>250)
+        {
+        <p class="activatedgreen">Cooling</p>
+        }
+        else
+        {
+        <p class="box1">Cooling</p>
+        }
+        @if(Math.Round(Convert.ToDouble(Model.Asset_Data_Object.ammonia), 2)>10)
+        {
+        <p class="activatedgreen">Deordering</p>
+        }
+        else
+        {
+        <p class="box1">Deordering</p>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    var map;
+    var lati = document.getElementById('lat').innerHTML;
+    var long = document.getElementById('lon').innerHTML;
+    $(document).ready(function(){
+      map = new GMaps({
+        el: '#map',
+        lat: long,
+        lng: lati
+      });
+
+      map.addMarker({
+          lat: long,
+          lng: lati,
+        title: '',
+        infoWindow: {
+          content: '<p>PalamPur</p>'
+        }
+      });
+    });
+</script>
+<script>
+    var tempdata = document.getElementById('tempdata').innerHTML;
+  var g = new JustGage({
+    id: "gauge",
+    value: tempdata,
+    min: 0,
+    max: 50,
+    title: "Temperature"
+  });
+</script>
+<script>
+    var pressdata = document.getElementById('pressdata').innerHTML;
+  var g = new JustGage({
+    id: "gauge1",
+    value: pressdata,
+    min: 0,
+    max: 20,
+    title: "Pressure"
+  });
+</script>
+<script>
+    var humiditydata = document.getElementById('humiditydata').innerHTML;
+  var g = new JustGage({
+    id: "gauge2",
+    value: humiditydata,
+    min: 0,
+    max: 100,
+    title: "Humidity"
+  });
+</script>
+<script>
+    var ammoniadata = document.getElementById('ammoniadata').innerHTML;
+  var g = new JustGage({
+    id: "gauge3",
+    value: ammoniadata,
+    min: 0,
+    max: 10,
+    title: "Ammonia"
+  });
+</script>

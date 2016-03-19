@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AssetDBModelStoreContainer" CdmEntityContainer="DBAssetEntities">
+    <EntitySetMapping Name="Asset_Data">
+      <EntityTypeMapping TypeName="AssetDBModel.Asset_Data">
+        <MappingFragment StoreEntitySet="Asset_Data">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="asset_id" ColumnName="asset_id" />
+          <ScalarProperty Name="latitude" ColumnName="latitude" />
+          <ScalarProperty Name="longitude" ColumnName="longitude" />
+          <ScalarProperty Name="temperature" ColumnName="temperature" />
+          <ScalarProperty Name="humidity" ColumnName="humidity" />
+          <ScalarProperty Name="pressure" ColumnName="pressure" />
+          <ScalarProperty Name="ammonia" ColumnName="ammonia" />
+          <ScalarProperty Name="sanitary_Index" ColumnName="sanitary_Index" />
+          <ScalarProperty Name="sanitary_Index_flag" ColumnName="sanitary_Index_flag" />
+          <ScalarProperty Name="time_stamp" ColumnName="time_stamp" />
+          <ScalarProperty Name="active_users" ColumnName="active_users" />
+          <ScalarProperty Name="total_users" ColumnName="total_users" />
+          <ScalarProperty Name="rating" ColumnName="rating" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
